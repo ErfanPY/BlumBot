@@ -1,12 +1,14 @@
+FROM python:3.10.11-alpine3.18 as builder
+LABEL org.opencontainers.image.source=https://github.com/shamhi/HamsterKombatBot
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip3 install --upgrade pip setuptools wheel && \
+    pip3 install --no-cache-dir -r requirements.txt
+
 FROM python:3.10.11-alpine3.18
 
-WORKDIR app/
+WORKDIR /app
 
-COPY requirements.txt requirements.txt
-
-RUN pip3 install --upgrade pip setuptools wheel
-RUN pip3 install --no-warn-script-location --no-cache-dir -r requirements.txt
-
+COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
 COPY . .
-
-CMD ["python3", "main.py", "-a", "2"]
