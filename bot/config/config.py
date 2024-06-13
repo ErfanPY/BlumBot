@@ -10,10 +10,11 @@ class Settings(BaseSettings):
     API_HASH: str
 
     IS_DEV_MODE: bool = False
+    DO_TASKS: bool = True
 
     REFERRAL_CODES: Optional[list[str]] = None
 
     USE_PROXY_FROM_FILE: bool = False
-
+    
 
 settings = Settings()

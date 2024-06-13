@@ -303,14 +303,15 @@ class Blum:
 
             balance = await self.get_balance()
 
-            tasks = await self.get_tasks()
-            for task in tasks:
-                if task.status == task.Status.not_started and task.type != task.Type.progress_target:
-                    await self.start_task(task.id)
-                elif task.status == task.Status.started:
-                    if task.socialSubscription and task.socialSubscription.openInTelegram:
-                        await self.subscribe(task.socialSubscription.url)
-                    await self.claim_task(task.id)
+            if settings.DO_TASKS:
+                tasks = await self.get_tasks()
+                for task in tasks:
+                    if task.status == task.Status.not_started and task.type != task.Type.progress_target:
+                        await self.start_task(task.id)
+                    elif task.status == task.Status.started:
+                        if task.socialSubscription and task.socialSubscription.openInTelegram:
+                            await self.subscribe(task.socialSubscription.url)
+                        await self.claim_task(task.id)
 
             if balance.game_passes > 0:
                 for _ in range(balance.game_passes):
